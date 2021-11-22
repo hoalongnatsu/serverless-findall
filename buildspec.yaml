@@ -1,0 +1,21 @@
+version: 0.2
+env:
+  variables:
+    S3_BUCKET: "kala.lambda.bucket"
+    FUNCTION_NAME: findall
+
+phases:
+  pre_build:
+    commands:
+      - go get
+      - go vet .
+
+  build:
+    commands:
+      - go build -o $FUNCTION_NAME main.go
+      - zip $FUNCTION_NAME.zip $FUNCTION_NAME
+      - aws s3 cp $FUNCTION_NAME.zip s3://$S3_BUCKET/
+
+  post_build:
+    commands:
+      - aws lambda update-function-code --function-name $FUNCTION_NAME --s3-bucket $S3_BUCKET --s3-key $FUNCTION_NAME.zip
