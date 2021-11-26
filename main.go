@@ -25,6 +25,10 @@ func findAll(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse,
 		return events.APIGatewayProxyResponse{
 			StatusCode: http.StatusInternalServerError,
 			Body:       "Error while retrieving AWS credentials",
+			Headers: map[string]string{
+				"Content-Type":                "application/json",
+				"Access-Control-Allow-Origin": "*",
+			},
 		}, nil
 	}
 
@@ -32,7 +36,11 @@ func findAll(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse,
 	if err != nil {
 		return events.APIGatewayProxyResponse{
 			StatusCode: http.StatusBadRequest,
-			Body:       "Count Header should be a number",
+			Headers: map[string]string{
+				"Content-Type":                "application/json",
+				"Access-Control-Allow-Origin": "*",
+			},
+			Body: "Count Header should be a number",
 		}, nil
 	}
 
@@ -44,7 +52,11 @@ func findAll(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse,
 	if err != nil {
 		return events.APIGatewayProxyResponse{
 			StatusCode: http.StatusInternalServerError,
-			Body:       "Error while list movies to DynamoDB",
+			Headers: map[string]string{
+				"Content-Type":                "application/json",
+				"Access-Control-Allow-Origin": "*",
+			},
+			Body: "Error while list movies to DynamoDB",
 		}, nil
 	}
 
@@ -53,7 +65,11 @@ func findAll(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse,
 	if err != nil {
 		return events.APIGatewayProxyResponse{
 			StatusCode: http.StatusInternalServerError,
-			Body:       err.Error(),
+			Headers: map[string]string{
+				"Content-Type":                "application/json",
+				"Access-Control-Allow-Origin": "*",
+			},
+			Body: err.Error(),
 		}, nil
 	}
 
@@ -61,13 +77,18 @@ func findAll(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse,
 	if err != nil {
 		return events.APIGatewayProxyResponse{
 			StatusCode: http.StatusInternalServerError,
-			Body:       "Error while decoding to string value",
+			Headers: map[string]string{
+				"Content-Type":                "application/json",
+				"Access-Control-Allow-Origin": "*",
+			},
+			Body: "Error while decoding to string value",
 		}, nil
 	}
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
 		Headers: map[string]string{
-			"Content-Type": "application/json",
+			"Content-Type":                "application/json",
+			"Access-Control-Allow-Origin": "*",
 		},
 		Body: string(res),
 	}, nil
